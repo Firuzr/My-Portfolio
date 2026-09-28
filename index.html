@@ -1,0 +1,107 @@
+HTML
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firuz - Klassik Kriptoqrafiya Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <h1>Firuz Rzayev</h1>
+        <p>İnformasiya Təhlükəsizliyi Tələbəsi</p>
+        <hr>
+        
+        <h3>Klassik Kriptoqrafik Alqoritmlər</h3>
+        <input type="text" id="inputText" placeholder="Mətni daxil edin (məs: FIRUZ)...">
+        <br><br>
+        
+        <!-- 4 Əsas Şifrələmə Düyməsi -->
+        <button onclick="caesarCipher()">1. Sezar (Caesar)</button>
+        <button onclick="vigenereCipher()">2. Vijener (Vigenère)</button>
+        <button onclick="gronsfeldCipher()">3. Qronsfeld (Gronsfeld)</button>
+        <button onclick="affineCipher()">4. Affin (Affine)</button>
+
+        <div style="margin-top: 15px; text-align: left; background: #0f172a; padding: 10px; border-radius: 8px;">
+            <p><b>Şifrələmə Nəticəsi:</b> <span id="resultText" style="color: #4ade80; word-break: break-all;">-</span></p>
+        </div>
+    </div>
+
+    <script>
+        // 1. SEZAR ŞİFRƏSİ (Açar = +3 sürüşdürmə)
+        function caesarCipher() {
+            let text = document.getElementById("inputText").value.toUpperCase();
+            let result = "";
+            for (let i = 0; i < text.length; i++) {
+                let code = text.charCodeAt(i);
+                if (code >= 65 && code <= 90) {
+                    result += String.fromCharCode(((code - 65 + 3) % 26) + 65);
+                } else {
+                    result += text[i];
+                }
+            }
+            document.getElementById("resultText").innerText = "Sezar (+3): " + result;
+        }
+
+        // 2. VİJENER ŞİFRƏSİ (Açar söz: "KEY")
+        function vigenereCipher() {
+            let text = document.getElementById("inputText").value.toUpperCase();
+            let key = "KEY";
+            let result = "";
+            let keyIndex = 0;
+
+            for (let i = 0; i < text.length; i++) {
+                let code = text.charCodeAt(i);
+                if (code >= 65 && code <= 90) {
+                    let shift = key.charCodeAt(keyIndex % key.length) - 65;
+                    result += String.fromCharCode(((code - 65 + shift) % 26) + 65);
+                    keyIndex++;
+                } else {
+                    result += text[i];
+                }
+            }
+            document.getElementById("resultText").innerText = "Vijener (Açar: KEY): " + result;
+        }
+
+        // 3. QRONSFELD ŞİFRƏSİ (Rəqəmsal açar: 31415)
+        function gronsfeldCipher() {
+            let text = document.getElementById("inputText").value.toUpperCase();
+            let key = [3, 1, 4, 1, 5];
+            let result = "";
+            let keyIndex = 0;
+
+            for (let i = 0; i < text.length; i++) {
+                let code = text.charCodeAt(i);
+                if (code >= 65 && code <= 90) {
+                    let shift = key[keyIndex % key.length];
+                    result += String.fromCharCode(((code - 65 + shift) % 26) + 65);
+                    keyIndex++;
+                } else {
+                    result += text[i];
+                }
+            }
+            document.getElementById("resultText").innerText = "Qronsfeld (Açar: 31415): " + result;
+        }
+
+        // 4. AFFİN ŞİFRƏSİ (Düstur: E(x) = (5*x + 8) mod 26)
+        function affineCipher() {
+            let text = document.getElementById("inputText").value.toUpperCase();
+            let a = 5, b = 8;
+            let result = "";
+
+            for (let i = 0; i < text.length; i++) {
+                let code = text.charCodeAt(i);
+                if (code >= 65 && code <= 90) {
+                    let x = code - 65;
+                    let enc = (a * x + b) % 26;
+                    result += String.fromCharCode(enc + 65);
+                } else {
+                    result += text[i];
+                }
+            }
+            document.getElementById("resultText").innerText = "Affin (a=5, b=8): " + result;
+        }
+    </script>
+</body>
+</html>
